@@ -7,5 +7,5 @@ Source code of the paper: "Quad-Optimized Low-Discrepancy Sequences", ACM SIGGRA
 # Build Instructions
 
 
-# Generating samples
+# Generating Samples
 
