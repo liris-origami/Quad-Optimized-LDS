@@ -34,7 +34,7 @@ For instance, to generate matrices for up to $3^4$ samples in dimension 4:
 samplerGF3 -i ../initIrreducibleGF3.dat -m 4 -d 4
 ```
 
-which outputs the four matrices in GF(3) and the samples:
+which outputs the four matrices in GF(3) and the samples (cropped output):
 
 ```
 d= 0
