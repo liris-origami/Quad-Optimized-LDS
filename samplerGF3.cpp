@@ -45,7 +45,7 @@ void fill_mx(int sobol_mk_index, vector<vector<int>>& mx)
 }
 
 
-// Table of Sobol' matrices
+//
 typedef std::vector< vector<int> > sobol3_matrix;
 
 // integer digits / base 3
@@ -85,20 +85,20 @@ struct integer3
   static int8_t mod( const int x )
   {
     static constexpr int8_t tab_mod3[]= { 0, 1, 2, 0, 1, 2 };
-    //~ assert(x >= 0);
-    //~ assert(x < 6 );
+    assert(x >= 0);
+    assert(x < 6 );
     return tab_mod3[x];
   }
   
   // ( a + (b*c)%3 )%3
   static int8_t fma( const int a, const int b, const int c )
   {
-    //~ assert(a >= 0);
-    //~ assert(a < 3);
-    //~ assert(b >= 0);
-    //~ assert(b < 3);
-    //~ assert(c >= 0);
-    //~ assert(c < 3);
+    assert(a >= 0);
+    assert(a < 3);
+    assert(b >= 0);
+    assert(b < 3);
+    assert(c >= 0);
+    assert(c < 3);
     static constexpr int8_t tab_fma4[]= { 0, 0, 0, 0, 0, 1, 2, 0, 0, 2, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 2, 0, 0, 1, 0, 2, 0, 0, 0, 0, 0, 2, 2, 2, 0, 2, 0, 1, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     return tab_fma4[a*4*4 + b*4 + c];
   }
@@ -130,7 +130,7 @@ std::ostream& operator<< ( std::ostream& out, const integer3& i3 )
 
 
 
-// build the Gray code of an integer
+// build the Gray code of a base-3 integer
 // cf https://en.wikipedia.org/wiki/Gray_code#n-ary_Gray_code
 integer3 graycode( const integer3 n )
 {
@@ -161,12 +161,12 @@ integer3 point3_graycode( const sobol3_matrix& matrix, const unsigned m, const i
   d= integer3::mod(d + 3);
   assert(d == 1);
   
-  // update previous graycode index
-  pg3= ig3;
-  
   // update previous point
   for(unsigned j= 0; j < m; j++)
-    x3.digits[j]= integer3::mod(x3.digits[j] + matrix[m-1 - j][g]);    // reverse order !!
+    x3.digits[j]= integer3::mod(x3.digits[j] + matrix[m-1 - j][g]);
+    
+  // update previous graycode index
+  pg3= ig3;
   
   return x3;
 }
@@ -260,14 +260,14 @@ integer3 scramble_base3( const integer3& a3, const unsigned seed, const unsigned
   FCRNG rng(seed);
   
   integer3 b3;
-  unsigned node_index= 0;
+  unsigned node_index= 0;                                   // start at the root node
   for(unsigned i= 0; i < ndigits; i++)
   {
-    unsigned flip= rng.index(node_index).sample_range(6);
-    unsigned digit= a3.digits[ndigits-1 - i];
-    b3.digits[ndigits-1 - i]= scramble[flip][digit];
+    unsigned flip= rng.index(node_index).sample_range(6);   // get a random permutation using the node index
+    unsigned digit= a3.digits[ndigits-1 - i];               // get a digit
+    b3.digits[ndigits-1 - i]= scramble[flip][digit];        // store the permuted digit
     
-    node_index= 3*node_index +1 + digit;
+    node_index= 3*node_index +1 + digit;                    // continue walking the permutation tree
     // heap layout, root i= 0, childs 3i+1, 3i+2, 3i+3
   }
   
@@ -281,15 +281,15 @@ int main( int argc, char **argv )
   int m= 5; // 3^5= 243 points
   int N= std::pow(3, m);
   
-  string init_file; // path tot the "initIrreducibleGF3.dat" file
+  string init_file; // path to the "initIrreducibleGF3.dat" file
   
   CLI::App app("samplerGF3");
-  app.add_option("-d", D, "number of dimensions, default: "+ std::to_string(D)  );
+  app.add_option("-d", D, "number of dimensions, default: " + std::to_string(D)  );
   app.add_option("-m", m, "size of the matrices, to produce up to 3^m points, default: " + std::to_string(m));
   app.add_option("-i,--init_file", init_file, "filename which contains initialization data, default: " + init_file)->required();
   CLI11_PARSE(app, argc, argv)
   
-  // read irreducible polynoms
+  // read irreducible polynomials
   if(load_mk(init_file, false) < D)
   {
     std::cout << "[error] reading '" << init_file << "'..." << std::endl;
@@ -340,7 +340,7 @@ int main( int argc, char **argv )
   }
   
   
-  // 2. all points
+  // 2. all other points
   for(int i= 1; i < N; i++)
   {
     integer3 i3= i;
