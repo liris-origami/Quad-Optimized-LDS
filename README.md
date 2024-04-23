@@ -28,44 +28,49 @@ Options:
                               filename which contains initialization data, default:
 ```
  
-For instance, to generate matrices for up to $3^4$ samples in dimension 4:
+For instance, to generate matrices, and the  $3^5$ Owen scrambled samples (on 5 digits) in dimension 4:
 
 ```
-samplerGF3 -i ../initIrreducibleGF3.dat -m 4 -d 4
+samplerGF3 -i ../initIrreducibleGF3.dat -m 5 -d 4
 ```
 
-which outputs the four matrices in GF(3) and the samples (cropped output):
+which outputs the four matrices in GF(3) and the scrambled samples (cropped output):
 
 ```
 d= 0
-1 0 0 0
-0 1 0 0
-0 0 1 0
-0 0 0 1
+1 0 0 0 0
+0 1 0 0 0
+0 0 1 0 0
+0 0 0 1 0
+0 0 0 0 1
 
 d= 1
-1 1 2 2
-0 1 0 2
-0 0 1 1
-0 0 0 1
+1 1 2 2 1
+0 1 0 2 0
+0 0 1 1 1
+0 0 0 1 0
+0 0 0 0 1
 
 d= 2
-1 2 1 2
-0 1 1 0
-0 0 1 0
-0 0 0 1
+1 2 1 2 1
+0 1 1 0 2
+0 0 1 0 0
+0 0 0 1 2
+0 0 0 0 1
 
 d= 3
-2 2 2 2
-0 2 1 0
-0 0 2 0
-0 0 0 2
+2 2 2 2 2
+0 2 1 0 2
+0 0 2 0 0
+0 0 0 2 2
+0 0 0 0 2
 
 4 dimensions.
 243 points.
-0.691358 0.209877 0.0123457 0.0864198
-0.283951 0.481481 0.37037 0.580247
-0.54321 0.938272 0.851852 0.938272
-0.901235 0.382716 0.753086 0.444444
+0.296296 0.115226 0.748971 0.835391
+0.399177 0.63786 0.641975 0.1893
+0.777778 0.876543 0.263374 0.514403
+0.0864198 0.444444 0.213992 0.0164609
+0.584362 0.711934 0.921811 0.563786
 ...
 ```
